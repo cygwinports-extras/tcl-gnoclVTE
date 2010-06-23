@@ -1,0 +1,21 @@
+ORIG_PN=${PN#tcl-}
+inherit tcl
+
+DESCRIPTION="Tcl bindings for the VTE library"
+HOMEPAGE="http://www.dr-baum.net/gnocl/"
+SRC_URI="mirror://sourceforge/gnocl/${ORIG_PN}-${PV}.tar.bz2"
+
+DISTCLEANFILES="src/*.o src/*.so"
+DEPS_PATH="/usr/lib/gnocl0.9.95"
+
+src_compile() {
+	lndirs
+	cd ${B}/src
+	cygmake GNOCL_VERSION=0.9.95
+}
+
+src_install() {
+	cd ${B}/src
+	exeinto /usr/lib/${ORIG_PN}${PV%[a-z]*}
+	doexe *.so pkgIndex.tcl
+}
